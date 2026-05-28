@@ -32,14 +32,17 @@ class Command(BaseCommand):
             username='analyst',
             defaults={'email': 'analyst@acmecorp.com', 'first_name': 'Jane', 'last_name': 'Analyst'}
         )
+        user.email = 'analyst@acmecorp.com'
+        user.first_name = 'Jane'
+        user.last_name = 'Analyst'
+        user.set_password('analyst123')
+        user.save()
         if created:
-            user.set_password('analyst123')
-            user.save()
             self.stdout.write('  Created user: analyst / analyst123')
         else:
-            self.stdout.write('  User "analyst" already exists')
+            self.stdout.write('  Updated user: analyst / analyst123')
 
-        TenantUser.objects.get_or_create(user=user, defaults={'tenant': tenant, 'role': 'analyst'})
+        TenantUser.objects.update_or_create(user=user, defaults={'tenant': tenant, 'role': 'analyst'})
 
         # 3. Create admin user
         admin_user, created = User.objects.get_or_create(
@@ -47,12 +50,19 @@ class Command(BaseCommand):
             defaults={'email': 'admin@acmecorp.com', 'first_name': 'John', 'last_name': 'Admin',
                       'is_staff': True, 'is_superuser': True}
         )
+        admin_user.email = 'admin@acmecorp.com'
+        admin_user.first_name = 'John'
+        admin_user.last_name = 'Admin'
+        admin_user.is_staff = True
+        admin_user.is_superuser = True
+        admin_user.set_password('admin123')
+        admin_user.save()
         if created:
-            admin_user.set_password('admin123')
-            admin_user.save()
             self.stdout.write('  Created admin: admin / admin123')
+        else:
+            self.stdout.write('  Updated admin: admin / admin123')
 
-        TenantUser.objects.get_or_create(user=admin_user, defaults={'tenant': tenant, 'role': 'admin'})
+        TenantUser.objects.update_or_create(user=admin_user, defaults={'tenant': tenant, 'role': 'admin'})
 
         # 4. Ingest sample files
         samples = [
@@ -62,6 +72,10 @@ class Command(BaseCommand):
         ]
 
         for filename, source_type, parser in samples:
+            if RawIngestion.objects.filter(tenant=tenant, source_type=source_type, filename=filename).exists():
+                self.stdout.write(f'  [{source_type}] {filename}: already seeded')
+                continue
+
             filepath = SAMPLE_DIR / filename
             if not filepath.exists():
                 self.stdout.write(self.style.WARNING(f'  Skipping {filename}: file not found'))

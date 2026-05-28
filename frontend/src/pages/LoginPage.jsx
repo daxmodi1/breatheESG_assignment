@@ -18,7 +18,13 @@ export default function LoginPage() {
       await login(username, password);
       navigate('/dashboard');
     } catch (err) {
-      setError(err.response?.data?.detail || 'Invalid credentials. Please try again.');
+      if (!err.response) {
+        setError('Cannot reach the server. Please try again in a moment.');
+      } else if (err.response.status >= 500) {
+        setError('The server hit an error while signing in. Please try again after the backend redeploy finishes.');
+      } else {
+        setError(err.response?.data?.detail || 'Invalid credentials. Please try again.');
+      }
     } finally {
       setLoading(false);
     }
