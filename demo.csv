@@ -1,0 +1,2 @@
+meter_id,site_name,period_start,period_end,quantity,unit,tariff_code
+MTR-001,HQ Building,2024-01-01,2024-01-31,45230.5,kWh,TOU-A

@@ -1,0 +1,11 @@
+meter_id,site_name,period_start,period_end,quantity,unit,tariff_code
+MTR-001,HQ Building,2024-01-01,2024-01-31,45230.5,kWh,TOU-A
+MTR-002,Warehouse North,2024-01-15,2024-02-14,18900.0,kWh,STD-1
+MTR-001,HQ Building,2024-02-01,2024-02-29,41800.0,kWh,TOU-A
+MTR-003,Data Centre,2024-01-01,2024-01-31,125000.0,kWh,IND-3
+MTR-002,Warehouse North,2024-02-15,2024-03-14,19500.0,kWh,STD-1
+MTR-003,Data Centre,2024-02-01,2024-02-29,128500.0,kWh,IND-3
+MTR-004,Branch Office East,2024-01-01,2024-01-31,8750.0,kWh,SMB-2
+MTR-004,Branch Office East,2024-02-01,2024-02-29,8200.0,kWh,SMB-2
+MTR-001,HQ Building,2024-03-01,2024-03-31,43100.0,kWh,TOU-A
+MTR-005,Manufacturing Plant,2024-01-01,2024-03-31,350000.0,MWh,IND-5
